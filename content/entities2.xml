@@ -1,0 +1,13 @@
+<entities anm2root="gfx/" version="5">
+    <entity anm2path="devil_key_piece_1.anm2" name="Devil Key Piece 1" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="13" friction="1" id="3" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
+    <entity anm2path="devil_key_piece_2.anm2" name="Devil Key Piece 2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="13" friction="1" id="3" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
+    <entity anm2path="devil_key_piece_full.anm2" name="Devil Key Piece Full" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="13" friction="1" id="3" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+</entities>
