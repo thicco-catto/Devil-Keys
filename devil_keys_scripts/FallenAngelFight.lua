@@ -70,9 +70,9 @@ local function BreakDevilStatue(gridEntity)
 
     DevilKeysMod.Data.ModifyClearAward = true
 
-    if MusicManager():GetCurrentMusicID() ~= Music.MUSIC_BOSS2 then
+    if MusicManager():GetCurrentMusicID() ~= Music.MUSIC_SATAN_BOSS then
         ---@diagnostic disable-next-line: param-type-mismatch
-        MusicManager():Play(Music.MUSIC_BOSS2, Options.MusicVolume)
+        MusicManager():Play(Music.MUSIC_SATAN_BOSS, Options.MusicVolume)
         MusicManager():UpdateVolume()
     end
 end
