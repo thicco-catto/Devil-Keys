@@ -216,13 +216,19 @@ function DevilKeyPieces:OnRedHeartInit(heart)
     heart.SubType ~= HeartSubType.HEART_HALF and
     heart.SubType ~= HeartSubType.HEART_SCARED then return end
 
-    if not Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_1) and
-    not Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_2) then return end
+    local chance = 0
+    if Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_1) then
+        chance = chance + 25
+    end
+
+    if Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_2) then
+        chance = chance + 25
+    end
 
     local rng = RNG()
     rng:SetSeed(heart.InitSeed, 35)
 
-    if rng:RandomInt(1000) < 25 then
+    if rng:RandomInt(1000) < chance then
         heart:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_BLACK, true)
     end
 end
