@@ -2,9 +2,28 @@ local DevilKeyPieces = {}
 local Helpers = require("devil_keys_scripts.Helpers")
 local Constants = require("devil_keys_scripts.Constants")
 
+local isCheckingOtherPlayersFamiliars = false
 
 ---@param player EntityPlayer
 function DevilKeyPieces:OnFamiliarCache(player)
+    local playerIndex = player:GetCollectibleRNG(1):GetSeed()
+
+    if not isCheckingOtherPlayersFamiliars then
+        isCheckingOtherPlayersFamiliars = true
+
+        for i = 0, Game():GetNumPlayers()-1, 1 do
+            local otherPlayer = Game():GetPlayer(i)
+            local otherIndex = otherPlayer:GetCollectibleRNG(1):GetSeed()
+
+            if otherIndex ~= playerIndex then
+                otherPlayer:AddCacheFlags(CacheFlag.CACHE_FAMILIARS)
+                otherPlayer:EvaluateItems()
+            end
+        end
+
+        isCheckingOtherPlayersFamiliars = false
+    end
+
     local familiarToCheck
 
     if Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_2) and
