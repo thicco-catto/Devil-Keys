@@ -14,6 +14,11 @@ Constants.FamiliarVariant = {
     DEVIL_KEY_PIECE_FULL = Isaac.GetEntityVariantByName("Devil Key Piece Full"),
 }
 
+Constants.EffectVariant = {
+    DEVIL_BIG_HAND = Isaac.GetEntityVariantByName("Devil Big Horn Hand"),
+    FAKE_BREAKING_KEY = Isaac.GetEntityVariantByName("Fake Breaking Key")
+}
+
 Constants.AngelTypeToKeyPiece = {
     [EntityType.ENTITY_URIEL] = Constants.CollectibleType.DEVIL_KEY_PIECE_1,
     [EntityType.ENTITY_GABRIEL] = Constants.CollectibleType.DEVIL_KEY_PIECE_2

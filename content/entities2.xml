@@ -1,4 +1,9 @@
 <entities anm2root="gfx/" version="5">
+    <!--Dummy entity that takes variant 40, because it's buggy just in case-->
+    <entity anm2path="dum dum.anm2" name="dummy empty thing" id="1000" variant="40" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="0" friction="1" numGridCollisionPoints="0" shadowSize="0" shutdoors="false" stageHP="0" gridCollision="none"> 
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
     <entity anm2path="devil_key_piece_1.anm2" name="Devil Key Piece 1" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="13" friction="1" id="3" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
@@ -8,6 +13,14 @@
     </entity>
 
     <entity anm2path="devil_key_piece_full.anm2" name="Devil Key Piece Full" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="13" friction="1" id="3" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
+    <entity anm2path="devil_big_horn_hand.anm2" name="Devil Big Horn Hand" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="13" friction="1" id="1000" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
+    <entity anm2path="devil_key_piece_1.anm2" name="Fake Breaking Key" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="13" friction="1" id="1000" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 </entities>
