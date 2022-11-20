@@ -207,3 +207,23 @@ function DevilKeyPieces:OnSacrificialAltarUse(_, _, player)
     end
 end
 DevilKeysMod:AddCallback(ModCallbacks.MC_USE_ITEM, DevilKeyPieces.OnSacrificialAltarUse)
+
+
+---@param heart EntityPickup
+function DevilKeyPieces:OnRedHeartInit(heart)
+    if heart.SubType ~= HeartSubType.HEART_DOUBLEPACK and
+    heart.SubType ~= HeartSubType.HEART_FULL and
+    heart.SubType ~= HeartSubType.HEART_HALF and
+    heart.SubType ~= HeartSubType.HEART_SCARED then return end
+
+    if Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_1) or
+    Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_2) then return end
+
+    local rng = RNG()
+    rng:SetSeed(heart.InitSeed, 35)
+
+    if rng:RandomInt(1000) < 25 then
+        heart:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_BLACK, true)
+    end
+end
+DevilKeysMod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, DevilKeyPieces.OnRedHeartInit, PickupVariant.PICKUP_HEART)

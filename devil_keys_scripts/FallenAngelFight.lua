@@ -65,6 +65,11 @@ local function BreakDevilStatue(gridEntity)
 
     SpecialFallenAngels[entityPtr] = true
 
+    local room = Game():GetRoom()
+    room:SetClear(false)
+
+    DevilKeysMod.Data.ModifyClearAward = true
+
     if MusicManager():GetCurrentMusicID() ~= Music.MUSIC_BOSS2 then
         ---@diagnostic disable-next-line: param-type-mismatch
         MusicManager():Play(Music.MUSIC_BOSS2, Options.MusicVolume)
@@ -75,6 +80,8 @@ end
 
 ---@param explosion EntityEffect
 function FallenAngelFight:OnExplosionInit(explosion)
+    if not DevilKeysMod.Data.IsAngelsUnlocked then return end
+
     local room = Game():GetRoom()
 
     ---@type GridEntity[]
@@ -143,6 +150,9 @@ function FallenAngelFight:OnFallenAngelDeath(angel)
         itemReward = itemReward:ToPickup()
 
         itemReward.Price = PickupPrice.PRICE_ONE_HEART
+    elseif not DevilKeysMod.Data.HasSpawnedMagnet and DevilKeysMod.Data.IsNumberMagnedUnlocked then
+        DevilKeysMod.Data.HasSpawnedMagnet = true
+        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, TrinketType.TRINKET_NUMBER_MAGNET, angel.Position, Vector.Zero, nil)
     end
     SpecialFallenAngels[entityPtr] = nil
 
@@ -175,5 +185,20 @@ DevilKeysMod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, FallenAngelFight.OnFall
 
 function FallenAngelFight:OnNewRoom()
     SpecialFallenAngels = {}
+    DevilKeysMod.Data.ModifyClearAward = false
 end
 DevilKeysMod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, FallenAngelFight.OnNewRoom)
+
+
+---@param rng RNG
+---@param spawnPos Vector
+function FallenAngelFight:PreClearAward(rng, spawnPos)
+    if not DevilKeysMod.Data.ModifyClearAward then return end
+
+    if rng:RandomInt(100) > 90 then return end
+
+    Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_REDCHEST, ChestSubType.CHEST_CLOSED, spawnPos, Vector.Zero, nil)
+
+    return true
+end
+DevilKeysMod:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, FallenAngelFight.PreClearAward)
