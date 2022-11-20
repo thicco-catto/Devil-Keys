@@ -139,7 +139,10 @@ function FallenAngelFight:OnFallenAngelDeath(angel)
 
     local itemToSpawn = GetFallenAngelReward(angel)
     if itemToSpawn then
-        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, itemToSpawn, angel.Position, Vector.Zero, nil)
+        local itemReward = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, itemToSpawn, angel.Position, Vector.Zero, nil)
+        itemReward = itemReward:ToPickup()
+
+        itemReward.Price = PickupPrice.PRICE_ONE_HEART
     end
     SpecialFallenAngels[entityPtr] = nil
 
