@@ -216,8 +216,8 @@ function DevilKeyPieces:OnRedHeartInit(heart)
     heart.SubType ~= HeartSubType.HEART_HALF and
     heart.SubType ~= HeartSubType.HEART_SCARED then return end
 
-    if Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_1) or
-    Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_2) then return end
+    if not Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_1) and
+    not Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_2) then return end
 
     local rng = RNG()
     rng:SetSeed(heart.InitSeed, 35)
