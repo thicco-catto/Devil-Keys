@@ -13,27 +13,34 @@ local function GetAngelToSpawn()
         spawnedAngels = DevilKeysMod.Data.SpawnedAngels
     end
 
-    local angelsToSpawn = {}
+    local chosen
 
     if not spawnedAngels[EntityType.ENTITY_URIEL] then
-        angelsToSpawn[#angelsToSpawn+1] = EntityType.ENTITY_URIEL
+        chosen = EntityType.ENTITY_URIEL
+    elseif not spawnedAngels[EntityType.ENTITY_GABRIEL] then
+        chosen = EntityType.ENTITY_GABRIEL
+    else
+        local hasDevilKeyPiece1 = Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_1)
+        local hasDevilKeyPiece2 = Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_2)
+
+        if hasDevilKeyPiece1 and not hasDevilKeyPiece2 then
+            chosen = EntityType.ENTITY_GABRIEL
+        elseif hasDevilKeyPiece2 and not hasDevilKeyPiece1 then
+            chosen = EntityType.ENTITY_URIEL
+        else
+            local level = Game():GetLevel()
+            local stage = level:GetStage()
+
+            local rng = RNG()
+            rng:SetSeed(Game():GetSeeds():GetStageSeed(stage), 35)
+
+            if rng:RandomInt(2) == 1 then
+                chosen = EntityType.ENTITY_URIEL
+            else
+                chosen = EntityType.ENTITY_GABRIEL
+            end
+        end
     end
-
-    if not spawnedAngels[EntityType.ENTITY_GABRIEL] then
-        angelsToSpawn[#angelsToSpawn+1] = EntityType.ENTITY_GABRIEL
-    end
-
-    if #angelsToSpawn == 0 then
-        angelsToSpawn = {EntityType.ENTITY_URIEL, EntityType.ENTITY_GABRIEL}
-    end
-
-    local level = Game():GetLevel()
-    local absoluteStage = level:GetStage()
-
-    local rng = RNG()
-    rng:SetSeed(Game():GetSeeds():GetStageSeed(absoluteStage), 35)
-
-    local chosen = angelsToSpawn[rng:RandomInt(#angelsToSpawn)+1]
 
     spawnedAngels[chosen] = true
 
@@ -110,18 +117,11 @@ local function GetFallenAngelReward(angel)
 
         return itemPool:GetCollectible(ItemPoolType.POOL_DEVIL, true, angel.InitSeed, CollectibleType.COLLECTIBLE_NULL)
     else
-        local keyPiecesSpawned = DevilKeysMod.Data.SpawnedKeyPieces
-        if not keyPiecesSpawned then
-            DevilKeysMod.Data.SpawnedKeyPieces = {}
-            keyPiecesSpawned = DevilKeysMod.Data.SpawnedKeyPieces
-        end
-
         local keyToSpawn = Constants.AngelTypeToKeyPiece[angel.Type]
 
-        if keyPiecesSpawned[keyToSpawn] then
+        if Helpers.DoesAnyPlayerHaveItem(keyToSpawn) then
             return nil
         else
-            keyPiecesSpawned[keyToSpawn] = true
             return keyToSpawn
         end
     end
