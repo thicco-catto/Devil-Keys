@@ -217,12 +217,21 @@ function DevilKeyPieces:OnRedHeartInit(heart)
     heart.SubType ~= HeartSubType.HEART_SCARED then return end
 
     local chance = 0
-    if Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_1) then
-        chance = chance + 25
+
+    for i = 0, Game():GetNumPlayers()-1, 1 do
+        local player = Game():GetPlayer(i)
+
+        if player:HasCollectible(Constants.CollectibleType.DEVIL_KEY_PIECE_1) then
+            chance = chance + 25
+        end
     end
 
-    if Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_2) then
-        chance = chance + 25
+    for i = 0, Game():GetNumPlayers()-1, 1 do
+        local player = Game():GetPlayer(i)
+
+        if player:HasCollectible(Constants.CollectibleType.DEVIL_KEY_PIECE_2) then
+            chance = chance + 25
+        end
     end
 
     local rng = RNG()
