@@ -148,7 +148,6 @@ function KeyPiecesDarkRoom:OnNewRoom()
     if stageType == StageType.STAGETYPE_ORIGINAL then
         --We're in the dark room
         ReplaceMegaSatanDoorSprite(megaSatanDoor)
-        SpawnFullKeyForDevilKey()
 
         local keyAnimFile = ""
 
@@ -171,8 +170,6 @@ function KeyPiecesDarkRoom:OnNewRoom()
             specialLightBeam:GetData().DontDealDamageToPlayers = true
             specialLightBeam:GetSprite():Play("SpotlightDelayed2", true)
 
-            print(keyAnimFile)
-
             local fakeKey = Isaac.Spawn(EntityType.ENTITY_EFFECT, Constants.EffectVariant.FAKE_BREAKING_KEY, 0, room:GetCenterPos(), Vector.Zero, nil)
             fakeKey:GetSprite():Load(keyAnimFile, true)
             fakeKey:GetSprite():ReplaceSpritesheet(0, "gfx/characters/costumes/costume_rebirth_44_keysfloating.png")
@@ -182,6 +179,8 @@ function KeyPiecesDarkRoom:OnNewRoom()
 
             DevilKeysMod.Data.ReplaceChests = true
         end
+
+        SpawnFullKeyForDevilKey()
     else
         --We're in the chest
         local keyAnimFile = ""
