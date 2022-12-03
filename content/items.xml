@@ -2,6 +2,6 @@
     <familiar id="1" name="Devil Key Piece 1" description="???" gfx="devil_key_piece_1.png" quality="0" tags="uniquefamiliar offensive lazarusshared noeden nocantrip quest"/>
     <familiar id="2" name="Devil Key Piece 2" description="???" gfx="devil_key_piece_2.png" quality="0" tags="uniquefamiliar offensive lazarusshared noeden nocantrip quest"/>
 
-    <passive name="ANGELS_ACHIEVEMENT_TRACKER" description="wtf" achievement="155" tags="quest"/>
-    <passive name="NUMBER_MAGNET_ACHIEVEMENT_TRACKER" description="wtf" achievement="555" tags="quest"/>
+    <passive name="ANGELS_ACHIEVEMENT_TRACKER" description="wtf" gfx="devil_key_piece_1.png" achievement="155" tags="quest"/>
+    <passive name="NUMBER_MAGNET_ACHIEVEMENT_TRACKER" description="wtf" gfx="devil_key_piece_1.png" achievement="555" tags="quest"/>
 </items>
