@@ -104,6 +104,21 @@ end
 function DevilKeyPieces:OnPlayerUpdate(player)
     local playerData = DevilKeysMod.GetPlayerData(player)
 
+    if player:HasCollectible(Constants.CollectibleType.DEVIL_KEY_PIECE_2) and
+    not playerData.HasSpawnedSpecialTrinket then
+        playerData.HasSpawnedSpecialTrinket = true
+
+        local room = Game():GetRoom()
+        local spawningPos = room:FindFreePickupSpawnPosition(player.Position, 1, true)
+
+        local trinketToSpawn = TrinketType.TRINKET_BLACK_FEATHER
+        if DevilKeysMod.Data.IsNumberMagnetUnlocked then
+            trinketToSpawn = TrinketType.TRINKET_NUMBER_MAGNET
+        end
+
+        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, trinketToSpawn, spawningPos, Vector.Zero, nil)
+    end
+
     local prevWispNumber = playerData.WispNumber
     local currentWispNumber = player:GetCollectibleNum(Constants.CollectibleType.DEVIL_KEY_PIECE_1) +
     player:GetCollectibleNum(Constants.CollectibleType.DEVIL_KEY_PIECE_2)
