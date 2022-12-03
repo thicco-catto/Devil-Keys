@@ -36,10 +36,6 @@ function DevilKeyPieces:OnFamiliarCache(player)
         familiarToCheck = Constants.FamiliarVariant.DEVIL_KEY_PIECE_1
     end
 
-    if DevilKeysMod.Data.HasOpenedDevilKeyDoor then
-        familiarToCheck = nil
-    end
-
     for _, familiarVariant in pairs(Constants.FamiliarVariant) do
         if familiarVariant ~= familiarToCheck then
             player:CheckFamiliar(
@@ -52,11 +48,28 @@ function DevilKeyPieces:OnFamiliarCache(player)
 
     if not familiarToCheck then return end
 
-    player:CheckFamiliar(
-        familiarToCheck,
-        1,
-        player:GetCollectibleRNG(Constants.CollectibleType.DEVIL_KEY_PIECE_1)
-    )
+    if DevilKeysMod.Data.SpawnFullNormalKey and
+    familiarToCheck == Constants.FamiliarVariant.DEVIL_KEY_PIECE_FULL then
+        DevilKeysMod.Data.HasSpawnedFullKey = true
+
+        player:CheckFamiliar(
+            Constants.FamiliarVariant.DEVIL_KEY_PIECE_FULL,
+            0,
+            player:GetCollectibleRNG(Constants.CollectibleType.DEVIL_KEY_PIECE_1)
+        )
+
+        player:CheckFamiliar(
+            FamiliarVariant.KEY_FULL,
+            1,
+            player:GetCollectibleRNG(Constants.CollectibleType.DEVIL_KEY_PIECE_1)
+        )
+    else
+        player:CheckFamiliar(
+            familiarToCheck,
+            1,
+            player:GetCollectibleRNG(Constants.CollectibleType.DEVIL_KEY_PIECE_1)
+        )
+    end
 end
 DevilKeysMod:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, DevilKeyPieces.OnFamiliarCache, CacheFlag.CACHE_FAMILIARS)
 

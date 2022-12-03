@@ -18,7 +18,7 @@ local CHEST_PICKUP_VARIANTS = {
 }
 
 
-function TryReplaceChests()
+local function TryReplaceChests()
     DevilKeysMod.Data.ReplaceChests = false
 
     local level = Game():GetLevel()
@@ -43,7 +43,7 @@ end
 
 
 ---@return GridEntityDoor?
-function FindMegaSatanDoor()
+local function FindMegaSatanDoor()
     local room = Game():GetRoom()
 
     for i = 0, DoorSlot.NUM_DOOR_SLOTS-1, 1 do
@@ -57,7 +57,7 @@ end
 
 
 ---@param door GridEntityDoor
-function ReplaceMegaSatanDoorSprite(door)
+local function ReplaceMegaSatanDoorSprite(door)
     local sprite = door:GetSprite()
     for layer = 0, sprite:GetLayerCount()-1, 1 do
         sprite:ReplaceSpritesheet(layer, "gfx/grid/mega_satan_door_devil_key.png")
@@ -66,7 +66,7 @@ function ReplaceMegaSatanDoorSprite(door)
 end
 
 
-function RemoveRegularKeyPieces()
+local function RemoveRegularKeyPieces()
     local hasRemovedItem = false
     for i = 0, Game():GetNumPlayers()-1, 1 do
         local player = Game():GetPlayer(i)
@@ -85,7 +85,7 @@ function RemoveRegularKeyPieces()
 end
 
 
-function RemoveDevilKeyPieces()
+local function RemoveDevilKeyPieces()
     local hasRemovedItem = false
     for i = 0, Game():GetNumPlayers()-1, 1 do
         local player = Game():GetPlayer(i)
@@ -105,7 +105,7 @@ function RemoveDevilKeyPieces()
 end
 
 
-function SpawnFullKeyForDevilKey()
+local function SpawnFullKeyForDevilKey()
     if Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_1) and
     Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_2) and
     not DevilKeysMod.Data.HasOpenedDevilKeyDoor then
@@ -134,6 +134,9 @@ end
 function KeyPiecesDarkRoom:OnNewRoom()
     --Find mega satan door
     local megaSatanDoor = FindMegaSatanDoor()
+
+    DevilKeysMod.Data.SpawnFullNormalKey = false
+    DevilKeysMod.Data.HasSpawnedFullKey = false
 
     if not megaSatanDoor then return end
 
@@ -180,7 +183,16 @@ function KeyPiecesDarkRoom:OnNewRoom()
             DevilKeysMod.Data.ReplaceChests = true
         end
 
-        SpawnFullKeyForDevilKey()
+        -- SpawnFullKeyForDevilKey()
+        if not DevilKeysMod.Data.HasOpenedDevilKeyDoor then
+            DevilKeysMod.Data.SpawnFullNormalKey = true
+        end
+
+        for i = 0, Game():GetNumPlayers()-1, 1 do
+            local player = Game():GetPlayer(i)
+            player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS)
+            player:EvaluateItems()
+        end
     else
         --We're in the chest
         local keyAnimFile = ""
@@ -285,3 +297,26 @@ function KeyPiecesDarkRoom:OnBigHandUpdate(effect)
     end
 end
 DevilKeysMod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, KeyPiecesDarkRoom.OnBigHandUpdate, Constants.EffectVariant.DEVIL_BIG_HAND)
+
+
+---@param fullKey EntityFamiliar
+function KeyPiecesDarkRoom:OnNormalFullKeyInit(fullKey)
+    if DevilKeysMod.Data.SpawnFullNormalKey then
+        local sprite = fullKey:GetSprite()
+
+        sprite:ReplaceSpritesheet(0, "gfx/familiars/devil_key_pieces.png")
+        sprite:LoadGraphics()
+    end
+end
+DevilKeysMod:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, KeyPiecesDarkRoom.OnNormalFullKeyInit, FamiliarVariant.KEY_FULL)
+
+
+function KeyPiecesDarkRoom:OnUpdate()
+    if DevilKeysMod.Data.HasSpawnedFullKey then
+        if Isaac.CountEntities(nil, EntityType.ENTITY_FAMILIAR, FamiliarVariant.KEY_FULL) == 0 then
+            DevilKeysMod.Data.HasSpawnedFullKey = false
+            RemoveDevilKeyPieces()
+        end
+    end
+end
+DevilKeysMod:AddCallback(ModCallbacks.MC_POST_UPDATE, KeyPiecesDarkRoom.OnUpdate)
