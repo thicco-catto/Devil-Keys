@@ -1,6 +1,6 @@
 <ItemPools>
     <Pool Name="woodenChest">
-        <Item Name="##ANGELS_ACHIEVEMENT_TRACKER" Weight="1" DecreaseBy="0.5" RemoveOn="0.1"/>
-        <Item Name="##NUMBER_MAGNET_ACHIEVEMENT_TRACKER" Weight="1" DecreaseBy="0.5" RemoveOn="0.1"/>
+        <Item Name="ANGELS_ACHIEVEMENT_TRACKER" Weight="1" DecreaseBy="0.5" RemoveOn="0.1"/>
+        <Item Name="NUMBER_MAGNET_ACHIEVEMENT_TRACKER" Weight="1" DecreaseBy="0.5" RemoveOn="0.1"/>
     </Pool>
 </ItemPools>
