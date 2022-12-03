@@ -7,7 +7,7 @@ function CheckAchievements:OnGameStart(isContinue)
     if isContinue then return end
 
     DevilKeysMod.Data.IsAngelsUnlocked = Helpers.IsCollectibleInItemPool(Constants.CollectibleType.ANGELS_ACHIEVEMENT_TRACKER, ItemPoolType.POOL_WOODEN_CHEST)
-    DevilKeysMod.Data.IsNumberMagnedUnlocked = Helpers.IsCollectibleInItemPool(Constants.CollectibleType.NUMBER_MAGNET_ACHIEVEMENT_TRACKER, ItemPoolType.POOL_WOODEN_CHEST)
+    DevilKeysMod.Data.IsNumberMagnetUnlocked = Helpers.IsCollectibleInItemPool(Constants.CollectibleType.NUMBER_MAGNET_ACHIEVEMENT_TRACKER, ItemPoolType.POOL_WOODEN_CHEST)
 
     local itemPool = Game():GetItemPool()
 

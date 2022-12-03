@@ -150,7 +150,7 @@ function FallenAngelFight:OnFallenAngelDeath(angel)
         itemReward = itemReward:ToPickup()
 
         itemReward.Price = PickupPrice.PRICE_ONE_HEART
-    elseif not DevilKeysMod.Data.HasSpawnedMagnet and DevilKeysMod.Data.IsNumberMagnedUnlocked then
+    elseif not DevilKeysMod.Data.HasSpawnedMagnet and DevilKeysMod.Data.IsNumberMagnetUnlocked then
         DevilKeysMod.Data.HasSpawnedMagnet = true
         Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, TrinketType.TRINKET_NUMBER_MAGNET, angel.Position, Vector.Zero, nil)
     end
