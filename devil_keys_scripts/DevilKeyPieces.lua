@@ -112,8 +112,12 @@ function DevilKeyPieces:OnPlayerUpdate(player)
         local spawningPos = room:FindFreePickupSpawnPosition(player.Position, 1, true)
 
         local trinketToSpawn = TrinketType.TRINKET_BLACK_FEATHER
-        if DevilKeysMod.Data.IsNumberMagnetUnlocked then
-            trinketToSpawn = TrinketType.TRINKET_NUMBER_MAGNET
+
+        if (DevilKeysMod.Config.TrinketToSpawn == 1 and DevilKeysMod.Data.IsNumberMagnetUnlocked) or
+        DevilKeysMod.Config.TrinketToSpawn == 3 then
+            if DevilKeysMod.Data.IsNumberMagnetUnlocked then
+                trinketToSpawn = TrinketType.TRINKET_NUMBER_MAGNET
+            end
         end
 
         Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, trinketToSpawn, spawningPos, Vector.Zero, nil)

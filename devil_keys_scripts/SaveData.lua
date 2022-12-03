@@ -86,7 +86,7 @@ local function ReloadAllCache()
 end
 
 -- Saves current Data, Persistent, and Config to storage.
-local function SaveStorage() -- 99% sure there's no harm in ignoring shouldsave as long as you blank out the data at the start of a run
+function Mod:SaveStorage() -- 99% sure there's no harm in ignoring shouldsave as long as you blank out the data at the start of a run
 	local saving = {
 		Data = Mod.Data,
 		Config = Mod.Config,
@@ -94,7 +94,7 @@ local function SaveStorage() -- 99% sure there's no harm in ignoring shouldsave 
 	}
 	Mod:SaveData(json.encode(saving))
 end
-Mod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, SaveStorage)
+Mod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, Mod.SaveStorage)
 
 -- Loads up Data, LastData, Persistent, and Config when continuing a run; only loads up Persistent and Config when starting a new one
 local continue = false
@@ -205,9 +205,9 @@ end
 
 -- This should remain at the bottom, so any changes to Data your mod makes at the start of a new floor will be saved.
 local function DelayAddingThisCallback()
-	SaveStorage() -- just throwing this in here because you need to save after starting a new run, or else you can kinda carry data over runs in niche ways
+	Mod:SaveStorage() -- just throwing this in here because you need to save after starting a new run, or else you can kinda carry data over runs in niche ways
 	if SaveDataDelayedCallback then return end
-	Mod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, SaveStorage)
+	Mod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, Mod.SaveStorage)
 	SaveDataDelayedCallback = true
 end
 Mod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, DelayAddingThisCallback)

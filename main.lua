@@ -6,3 +6,5 @@ require("devil_keys_scripts.FallenAngelFight")
 require("devil_keys_scripts.KeyPiecesDarkRoom")
 require("devil_keys_scripts.DevilKeyPieces")
 require("devil_keys_scripts.CheckAchievements")
+
+require("devil_keys_scripts.DssMenu")
