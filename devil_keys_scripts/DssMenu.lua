@@ -142,7 +142,7 @@ local exampledirectory = {
                 str = 'trinket to spawn',
 
                 -- The "choices" tag on a button allows you to create a multiple-choice setting
-                choices = {'detect number magnet', 'black feather', 'number magnet'},
+                choices = {'detect number magnet', 'always black feather', 'always number magnet'},
                 -- The "setting" tag determines the default setting, by list index. EG "1" here will result in the default setting being "choice a"
                 setting = 1,
 
@@ -163,8 +163,126 @@ local exampledirectory = {
                 end,
 
                 -- A simple way to define tooltips is using the "strset" tag, where each string in the table is another line of the tooltip
-                tooltip = {strset = {'what trinket', 'spawns after', '3rd angel'}}
-            }
+                tooltip = {strset = {'what trinket', 'spawns after', '2nd key piece'}}
+            },
+
+            {
+                str = '',
+                fsize = 2,
+                nosel = true
+            },
+
+            {
+                str = "detecting the number magnet unlock",
+                fsize = 1,
+                nosel = true,
+
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'TrinketToSpawn' then
+                            return btn.setting == 1
+                        end
+                    end
+                end
+            },
+            {
+                str = "can be unreliable when there are",
+                fsize = 1,
+                nosel = true,
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'TrinketToSpawn' then
+                            return btn.setting == 1
+                        end
+                    end
+                end
+            },
+            {
+                str = "too many mods",
+                fsize = 1,
+                nosel = true,
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'TrinketToSpawn' then
+                            return btn.setting == 1
+                        end
+                    end
+                end
+            },
+
+            {
+                str = '',
+                fsize = 1,
+                nosel = true,
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'TrinketToSpawn' then
+                            return btn.setting == 2
+                        end
+                    end
+                end
+            },
+            {
+                str = "always spawn black feather",
+                fsize = 1,
+                nosel = true,
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'TrinketToSpawn' then
+                            return btn.setting == 2
+                        end
+                    end
+                end
+            },
+            {
+                str = '',
+                fsize = 1,
+                nosel = true,
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'TrinketToSpawn' then
+                            return btn.setting == 2
+                        end
+                    end
+                end
+            },
+
+            {
+                str = '',
+                fsize = 1,
+                nosel = true,
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'TrinketToSpawn' then
+                            return btn.setting == 3
+                        end
+                    end
+                end
+            },
+            {
+                str = "always spawn number magnet",
+                fsize = 1,
+                nosel = true,
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'TrinketToSpawn' then
+                            return btn.setting == 3
+                        end
+                    end
+                end
+            },
+            {
+                str = '',
+                fsize = 1,
+                nosel = true,
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'TrinketToSpawn' then
+                            return btn.setting == 3
+                        end
+                    end
+                end
+            },
         }
     }
 }
