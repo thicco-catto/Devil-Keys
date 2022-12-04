@@ -115,9 +115,7 @@ function DevilKeyPieces:OnPlayerUpdate(player)
 
         if (DevilKeysMod.Config.TrinketToSpawn == 1 and DevilKeysMod.Data.IsNumberMagnetUnlocked) or
         DevilKeysMod.Config.TrinketToSpawn == 3 then
-            if DevilKeysMod.Data.IsNumberMagnetUnlocked then
-                trinketToSpawn = TrinketType.TRINKET_NUMBER_MAGNET
-            end
+            trinketToSpawn = TrinketType.TRINKET_NUMBER_MAGNET
         end
 
         Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, trinketToSpawn, spawningPos, Vector.Zero, nil)

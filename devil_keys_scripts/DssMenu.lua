@@ -142,7 +142,7 @@ local exampledirectory = {
                 str = 'trinket to spawn',
 
                 -- The "choices" tag on a button allows you to create a multiple-choice setting
-                choices = {'detect number magnet', 'always black feather', 'always number magnet'},
+                choices = {'detect number magnet', 'black feather', 'number magnet'},
                 -- The "setting" tag determines the default setting, by list index. EG "1" here will result in the default setting being "choice a"
                 setting = 1,
 
