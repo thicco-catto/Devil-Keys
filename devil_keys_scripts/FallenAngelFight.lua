@@ -191,6 +191,7 @@ DevilKeysMod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, FallenAngelFight.OnNewRo
 ---@param spawnPos Vector
 function FallenAngelFight:PreClearAward(rng, spawnPos)
     if not DevilKeysMod.Data.ModifyClearAward then return end
+    if not spawnPos then return end
 
     if rng:RandomInt(100) > 90 then return end
 
