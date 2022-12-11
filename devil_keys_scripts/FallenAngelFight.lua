@@ -119,7 +119,7 @@ DevilKeysMod:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, FallenAngelFight.OnEx
 ---@param angel EntityNPC
 ---@return CollectibleType?
 local function GetFallenAngelReward(angel)
-    if Helpers.DoesAnyPlayerHaveTrinket(TrinketType.TRINKET_FILIGREE_FEATHERS) then
+    if Helpers.DoesAnyPlayerHaveTrinket(TrinketType.TRINKET_BLACK_FEATHER) then
         local itemPool = Game():GetItemPool()
 
         return itemPool:GetCollectible(ItemPoolType.POOL_DEVIL, true, angel.InitSeed, CollectibleType.COLLECTIBLE_NULL)
