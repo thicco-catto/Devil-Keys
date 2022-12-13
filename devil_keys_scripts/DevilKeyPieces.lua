@@ -220,7 +220,7 @@ function DevilKeyPieces:PreSacrificialAltarUse(_, _, player)
 		wisp.Player = nil
     end
 end
-DevilKeysMod:AddCallback(ModCallbacks.MC_PRE_USE_ITEM, DevilKeyPieces.PreSacrificialAltarUse)
+DevilKeysMod:AddCallback(ModCallbacks.MC_PRE_USE_ITEM, DevilKeyPieces.PreSacrificialAltarUse, CollectibleType.COLLECTIBLE_SACRIFICIAL_ALTAR)
 
 
 ---@param player EntityPlayer
@@ -236,7 +236,7 @@ function DevilKeyPieces:OnSacrificialAltarUse(_, _, player)
 		wisp.Player = player
     end
 end
-DevilKeysMod:AddCallback(ModCallbacks.MC_USE_ITEM, DevilKeyPieces.OnSacrificialAltarUse)
+DevilKeysMod:AddCallback(ModCallbacks.MC_USE_ITEM, DevilKeyPieces.OnSacrificialAltarUse, CollectibleType.COLLECTIBLE_SACRIFICIAL_ALTAR)
 
 
 ---@param heart EntityPickup
