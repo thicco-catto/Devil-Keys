@@ -1,8 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-	<name>Devil Keys</name>
-	<directory>devil keys</directory>
-	<description/>
-	<version>1.0</version>
-	<visibility/>
-</metadata>
+    <name>Devil Keys</name>
+    <directory>devil keys</directory>
+    <id>2897716537</id>
+    <description>Since Repentance released, Angel rooms have become the new meta, with most players opting to skip devil deals entirely for better and cheaper angel items. When going for Mega Satan especially, devil deals are often ignored completely to even get a half decent chance at getting both angel key pieces.
 
+[h1]Introducing, the Devil Key[/h1]
+
+Now when going to devil rooms, you can bomb the devil statue like in angel rooms to fight a fallen angel miniboss that drops a devil key piece. The Mega Satan door in Dark Room will now only open if you bring a complete devil key, leaving the angel's key with the ability to open the door in The Chest. 
+
+[h1]Mechanics[/h1]
+Of course, with how much easier devil deals are to get than angel deals are, a devil key piece costs 1 heart container to take, locking you into devil deals for the rest of the run. This cost is justified though, with the key's secondary effects of increasing devil deal chances and black heart spawn rates each as long as you hold them. Upon completing the key, the black feather trinket will drop, which acts as filigree feather does but for fallen angels. Number magnet will drop instead once unlocked, but you can configure this behavior in DSS menu by pressing c for your choice of demonic reward.
+The Devil key will ONLY open the dark room mega satan door and the angel key will ONLY open the chest mega satan door. Chose your path wisely..
+
+-----
+There's a strange bug where the game may not detect that you have number magnet unlocked and will still drop black feather, if this happens you can set it to always drop number magnet once you have it unlocked in DSS menu.
+
+The mods [u][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2847697646]Improved and Reworked Foes[/url][/u] by PixelPls and [u][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2619668503]Fallen Angels spawn Imps[/url][/u] by kittenchilly are recommended for improved and more thematic fallen angel fights!
+Special thanks to Ferpe#4305 for the amazing thumbnail and Ferry for the blingy Mega Satan door. This mod was made as a Thiccomission, if you also have a crazy good mod idea that you want to see made by some wonderful modders, contact Thicco Catto!</description>
+    <version>1.4</version>
+    <visibility>Public</visibility>
+    <tag id="Lua"/>
+    <tag id="Items"/>
+    <tag id="Bosses"/>
+    <tag id="Tweaks"/>
+</metadata>
