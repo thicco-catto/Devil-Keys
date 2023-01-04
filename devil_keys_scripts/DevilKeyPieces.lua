@@ -102,6 +102,9 @@ end
 
 ---@param player EntityPlayer
 function DevilKeyPieces:OnPlayerUpdate(player)
+    --Found soul doesnt get the key
+    if player.Variant == 1 then return end
+
     local playerData = DevilKeysMod.GetPlayerData(player)
 
     if player:HasCollectible(Constants.CollectibleType.DEVIL_KEY_PIECE_2) and
@@ -164,6 +167,7 @@ DevilKeysMod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, DevilKeyPieces.OnP
 
 ---@param tear EntityTear
 function DevilKeyPieces:OnTearUpdate(tear)
+    if not tear.SpawnerEntity then return end
     if tear.SpawnerType ~= EntityType.ENTITY_FAMILIAR or tear.SpawnerVariant ~= FamiliarVariant.WISP then return end
     local wisp = tear.SpawnerEntity:ToFamiliar()
 
