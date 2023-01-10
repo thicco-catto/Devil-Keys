@@ -332,7 +332,7 @@ local exampledirectory = {
                 str = 'key pieces price',
 
                 -- The "choices" tag on a button allows you to create a multiple-choice setting
-                choices = {'1 heart', '1/2 hearts', 'free'},
+                choices = {'1 heart', 'free/2 hearts', 'free'},
                 -- The "setting" tag determines the default setting, by list index. EG "1" here will result in the default setting being "choice a"
                 setting = 1,
 
@@ -389,7 +389,7 @@ local exampledirectory = {
             },
 
             {
-                str = "the first key costs 1 heart",
+                str = "the first key is free",
                 fsize = 1,
                 nosel = true,
                 displayif = function (_, item)

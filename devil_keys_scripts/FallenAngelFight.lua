@@ -160,7 +160,9 @@ function FallenAngelFight:OnFallenAngelDeath(angel)
             end
         end
 
-        if DevilKeysMod.Config.DevilKeysPrice ~= 3 then
+        if not (DevilKeysMod.Config.DevilKeysPrice == 3 or
+        (itemToSpawn == Constants.CollectibleType.DEVIL_KEY_PIECE_1 and
+        DevilKeysMod.Config.DevilKeysPrice == 2)) then
             if allPlayersKeeper then
                 itemReward.Price = 15
 

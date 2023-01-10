@@ -8,3 +8,4 @@ require("devil_keys_scripts.DevilKeyPieces")
 require("devil_keys_scripts.CheckAchievements")
 
 require("devil_keys_scripts.DssMenu")
+require("devil_keys_scripts.EIDCompat")

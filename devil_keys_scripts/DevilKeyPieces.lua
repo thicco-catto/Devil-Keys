@@ -366,7 +366,7 @@ function DevilKeyPieces:OnCollectibleUpdate(collectible)
 
     if not atLeastOnePlayerWithKey then return end
 
-    local colorAmount = 1 + math.abs(math.sin(collectible.FrameCount * 0.1) * 0.4)
+    local colorAmount = 1 + math.abs(math.sin(collectible.FrameCount * 0.1) * 0.6)
     local newColor = Color(colorAmount, colorAmount, colorAmount)
 
     collectible.Color = newColor
