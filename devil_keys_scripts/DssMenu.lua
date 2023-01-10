@@ -283,6 +283,160 @@ local exampledirectory = {
                     end
                 end
             },
+
+            {
+                str = '',
+                fsize = 2,
+                nosel = true
+            },
+
+            {
+                str = 'keys break',
+
+                -- The "choices" tag on a button allows you to create a multiple-choice setting
+                choices = {'yes', 'no'},
+                -- The "setting" tag determines the default setting, by list index. EG "1" here will result in the default setting being "choice a"
+                setting = 1,
+
+                -- "variable" is used as a key to story your setting; just set it to something unique for each setting!
+                variable = 'KeysOpenAllDoors',
+                
+                -- When the menu is opened, "load" will be called on all settings-buttons
+                -- The "load" function for a button should return what its current setting should be
+                -- This generally means looking at your mod's save data, and returning whatever setting you have stored
+                load = function()
+                    if DevilKeysMod.Config.KeysOpenAllDoors then
+                        return 2
+                    else
+                        return 1
+                    end
+                end,
+
+                -- When the menu is closed, "store" will be called on all settings-buttons
+                -- The "store" function for a button should save the button's setting (passed in as the first argument) to save data!
+                store = function(var)
+                    DevilKeysMod.Config.KeysOpenAllDoors = var == 2
+                end,
+
+                -- A simple way to define tooltips is using the "strset" tag, where each string in the table is another line of the tooltip
+                tooltip = {strset = {'whether keys', 'break when on', 'wrong path'}}
+            },
+
+            {
+                str = '',
+                fsize = 2,
+                nosel = true
+            },
+
+            {
+                str = 'key pieces price',
+
+                -- The "choices" tag on a button allows you to create a multiple-choice setting
+                choices = {'1 heart', '1/2 hearts', 'free'},
+                -- The "setting" tag determines the default setting, by list index. EG "1" here will result in the default setting being "choice a"
+                setting = 1,
+
+                -- "variable" is used as a key to story your setting; just set it to something unique for each setting!
+                variable = 'DevilKeysPrice',
+                
+                -- When the menu is opened, "load" will be called on all settings-buttons
+                -- The "load" function for a button should return what its current setting should be
+                -- This generally means looking at your mod's save data, and returning whatever setting you have stored
+                load = function()
+                    return DevilKeysMod.Config.DevilKeysPrice or 1
+                end,
+
+                -- When the menu is closed, "store" will be called on all settings-buttons
+                -- The "store" function for a button should save the button's setting (passed in as the first argument) to save data!
+                store = function(var)
+                    DevilKeysMod.Config.DevilKeysPrice = var
+                end,
+
+                -- A simple way to define tooltips is using the "strset" tag, where each string in the table is another line of the tooltip
+                tooltip = {strset = {'what price', 'the keys', 'will have'}}
+            },
+
+            {
+                str = '',
+                fsize = 2,
+                nosel = true
+            },
+
+            {
+                str = "both keys cost 1 heart",
+                fsize = 1,
+                nosel = true,
+
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'DevilKeysPrice' then
+                            return btn.setting == 1
+                        end
+                    end
+                end
+            },
+            {
+                str = "",
+                fsize = 1,
+                nosel = true,
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'DevilKeysPrice' then
+                            return btn.setting == 1
+                        end
+                    end
+                end
+            },
+
+            {
+                str = "the first key costs 1 heart",
+                fsize = 1,
+                nosel = true,
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'DevilKeysPrice' then
+                            return btn.setting == 2
+                        end
+                    end
+                end
+            },
+            {
+                str = "and the second key costs 2 hearts",
+                fsize = 1,
+                nosel = true,
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'DevilKeysPrice' then
+                            return btn.setting == 2
+                        end
+                    end
+                end
+            },
+
+            {
+                str = "both keys are free",
+                fsize = 1,
+                nosel = true,
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'DevilKeysPrice' then
+                            return btn.setting == 3
+                        end
+                    end
+                end
+            },
+            {
+                str = '',
+                fsize = 1,
+                nosel = true,
+                displayif = function (_, item)
+                    for _, btn in ipairs(item.buttons) do
+                        if btn.variable == 'DevilKeysPrice' then
+                            return btn.setting == 3
+                        end
+                    end
+                end
+            },
         }
     }
 }

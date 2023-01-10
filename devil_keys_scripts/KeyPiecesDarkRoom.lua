@@ -1,5 +1,4 @@
 local KeyPiecesDarkRoom = {}
-local Helpers = require("devil_keys_scripts.Helpers")
 local Constants = require("devil_keys_scripts.Constants")
 
 local CHEST_PICKUP_VARIANTS = {
@@ -105,30 +104,16 @@ local function RemoveDevilKeyPieces()
 end
 
 
-local function SpawnFullKeyForDevilKey()
-    if Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_1) and
-    Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_2) and
-    not DevilKeysMod.Data.HasOpenedDevilKeyDoor then
-        DevilKeysMod.Data.HasOpenedDevilKeyDoor = true
+function KeyPiecesDarkRoom:OnNewLevel()
+    local level = Game():GetLevel()
 
-        for i = 0, Game():GetNumPlayers()-1, 1 do
-            local player = Game():GetPlayer(i)
-            player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS)
-            player:EvaluateItems()
-        end
+    local stage = level:GetStage()
 
-        local room = Game():GetRoom()
-        local spawningPos = room:GetCenterPos()
-
-        local fullDevilKey = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.KEY_FULL, 0, spawningPos, Vector.Zero, nil)
-
-        fullDevilKey:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
-
-        local sprite = fullDevilKey:GetSprite()
-        sprite:ReplaceSpritesheet(0, "gfx/familiars/devil_key_pieces.png")
-        sprite:LoadGraphics()
+    if stage == LevelStage.STAGE5 then
+        DevilKeysMod.Data.HasGoneThroughSheol = true
     end
 end
+DevilKeysMod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, KeyPiecesDarkRoom.OnNewLevel)
 
 
 function KeyPiecesDarkRoom:OnNewRoom()
@@ -139,6 +124,18 @@ function KeyPiecesDarkRoom:OnNewRoom()
     DevilKeysMod.Data.HasSpawnedFullKey = false
 
     if not megaSatanDoor then return end
+
+    if DevilKeysMod.Config.KeysOpenAllDoors or not DevilKeysMod.Data.HasGoneThroughSheol then
+        DevilKeysMod.Data.SpawnFullNormalKey = true
+
+        for i = 0, Game():GetNumPlayers()-1, 1 do
+            local player = Game():GetPlayer(i)
+            player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS)
+            player:EvaluateItems()
+        end
+
+        return
+    end
 
     if DevilKeysMod.Data.ReplaceChests then
         TryReplaceChests()
@@ -183,10 +180,7 @@ function KeyPiecesDarkRoom:OnNewRoom()
             DevilKeysMod.Data.ReplaceChests = true
         end
 
-        -- SpawnFullKeyForDevilKey()
-        if not DevilKeysMod.Data.HasOpenedDevilKeyDoor then
-            DevilKeysMod.Data.SpawnFullNormalKey = true
-        end
+        DevilKeysMod.Data.SpawnFullNormalKey = true
 
         for i = 0, Game():GetNumPlayers()-1, 1 do
             local player = Game():GetPlayer(i)

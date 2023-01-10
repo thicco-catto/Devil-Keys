@@ -149,7 +149,36 @@ function FallenAngelFight:OnFallenAngelDeath(angel)
         local itemReward = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, itemToSpawn, angel.Position, Vector.Zero, nil)
         itemReward = itemReward:ToPickup()
 
-        itemReward.Price = PickupPrice.PRICE_ONE_HEART
+        local allPlayersKeeper = true
+        for i = 0, Game():GetNumPlayers()-1, 1 do
+            local player = Game():GetPlayer(i)
+
+            if player:GetPlayerType() ~= PlayerType.PLAYER_KEEPER and
+            player:GetPlayerType() ~= PlayerType.PLAYER_KEEPER_B then
+                allPlayersKeeper = false
+                break
+            end
+        end
+
+        if DevilKeysMod.Config.DevilKeysPrice ~= 3 then
+            if allPlayersKeeper then
+                itemReward.Price = 15
+
+                if itemToSpawn == Constants.CollectibleType.DEVIL_KEY_PIECE_2 and
+                DevilKeysMod.Config.DevilKeysPrice == 2 then
+                    itemReward.Price = 30
+                end
+            else
+                itemReward.Price = PickupPrice.PRICE_ONE_HEART
+
+                if itemToSpawn == Constants.CollectibleType.DEVIL_KEY_PIECE_2 and
+                DevilKeysMod.Config.DevilKeysPrice == 2 then
+                    itemReward.Price = PickupPrice.PRICE_TWO_HEARTS
+                end
+            end
+
+            itemReward.AutoUpdatePrice = false
+        end
     end
     SpecialFallenAngels[entityPtr] = nil
 
