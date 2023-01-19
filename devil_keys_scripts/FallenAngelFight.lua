@@ -170,16 +170,46 @@ function FallenAngelFight:OnFallenAngelDeath(angel)
                 DevilKeysMod.Config.DevilKeysPrice == 2 then
                     itemReward.Price = 30
                 end
-
-                itemReward.AutoUpdatePrice = false
             else
                 itemReward.Price = PickupPrice.PRICE_ONE_HEART
 
                 if itemToSpawn == Constants.CollectibleType.DEVIL_KEY_PIECE_2 and
                 DevilKeysMod.Config.DevilKeysPrice == 2 then
                     itemReward.Price = PickupPrice.PRICE_TWO_HEARTS
+
+                    local noPlayerHasMoreThanOneHeart = true
+                    for i = 0, Game():GetNumPlayers()-1, 1 do
+                        local player = Game():GetPlayer(i)
+
+                        if player:GetMaxHearts() > 2 then
+                            noPlayerHasMoreThanOneHeart = false
+                            break
+                        end
+                    end
+                    if noPlayerHasMoreThanOneHeart then
+                        itemReward.Price = PickupPrice.PRICE_ONE_HEART_AND_TWO_SOULHEARTS
+                    end
+                end
+
+                local noPlayerHasRedHearts = true
+                for i = 0, Game():GetNumPlayers()-1, 1 do
+                    local player = Game():GetPlayer(i)
+
+                    if player:GetMaxHearts() > 0 then
+                        noPlayerHasRedHearts = false
+                        break
+                    end
+                end
+                if noPlayerHasRedHearts then
+                    if itemReward.Price == PickupPrice.PRICE_ONE_HEART then
+                        itemReward.Price = PickupPrice.PRICE_ONE_SOUL_HEART
+                    else
+                        itemReward.Price = PickupPrice.PRICE_TWO_SOUL_HEARTS
+                    end
                 end
             end
+
+            itemReward.AutoUpdatePrice = false
         end
     end
     SpecialFallenAngels[entityPtr] = nil
