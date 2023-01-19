@@ -15,9 +15,9 @@ local function GetAngelToSpawn()
 
     local chosen
 
-    if not spawnedAngels[EntityType.ENTITY_URIEL] then
+    if not spawnedAngels[tostring(EntityType.ENTITY_URIEL)] then
         chosen = EntityType.ENTITY_URIEL
-    elseif not spawnedAngels[EntityType.ENTITY_GABRIEL] then
+    elseif not spawnedAngels[tostring(EntityType.ENTITY_GABRIEL)] then
         chosen = EntityType.ENTITY_GABRIEL
     else
         local hasDevilKeyPiece1 = Helpers.DoesAnyPlayerHaveItem(Constants.CollectibleType.DEVIL_KEY_PIECE_1)
@@ -42,7 +42,7 @@ local function GetAngelToSpawn()
         end
     end
 
-    spawnedAngels[chosen] = true
+    spawnedAngels[tostring(chosen)] = true
 
     return chosen
 end
@@ -170,6 +170,8 @@ function FallenAngelFight:OnFallenAngelDeath(angel)
                 DevilKeysMod.Config.DevilKeysPrice == 2 then
                     itemReward.Price = 30
                 end
+
+                itemReward.AutoUpdatePrice = false
             else
                 itemReward.Price = PickupPrice.PRICE_ONE_HEART
 
@@ -178,8 +180,6 @@ function FallenAngelFight:OnFallenAngelDeath(angel)
                     itemReward.Price = PickupPrice.PRICE_TWO_HEARTS
                 end
             end
-
-            itemReward.AutoUpdatePrice = false
         end
     end
     SpecialFallenAngels[entityPtr] = nil
