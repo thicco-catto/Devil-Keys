@@ -101,6 +101,12 @@ function DevilKeyPieces:OnPlayerUpdate(player)
 
     local playerData = DevilKeysMod.GetPlayerData(player)
 
+    if not playerData.HasReloadedFamiliarCache then
+        player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS)
+        player:EvaluateItems()
+        playerData.HasReloadedFamiliarCache = true
+    end
+
     if player:HasCollectible(Constants.CollectibleType.DEVIL_KEY_PIECE_2) and
     not playerData.HasSpawnedSpecialTrinket then
         playerData.HasSpawnedSpecialTrinket = true
