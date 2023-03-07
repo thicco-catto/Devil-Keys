@@ -94,12 +94,6 @@ DevilKeysMod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, DevilKeyPieces.OnDevil
 DevilKeysMod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, DevilKeyPieces.OnDevilKeyPieceUpdate, Constants.FamiliarVariant.DEVIL_KEY_PIECE_FULL)
 
 
----@param wisp EntityFamiliar
-function UpdateInvisibleWisp(wisp)
-    wisp.Position = Vector(-1000, -1000)
-end
-
-
 ---@param player EntityPlayer
 function DevilKeyPieces:OnPlayerUpdate(player)
     --Found soul doesnt get the key
@@ -124,123 +118,17 @@ function DevilKeyPieces:OnPlayerUpdate(player)
         Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, trinketToSpawn, spawningPos, Vector.Zero, nil)
     end
 
-    local prevWispNumber = playerData.WispNumber
-    local currentWispNumber = player:GetCollectibleNum(Constants.CollectibleType.DEVIL_KEY_PIECE_1) +
-    player:GetCollectibleNum(Constants.CollectibleType.DEVIL_KEY_PIECE_2)
-
-    if not prevWispNumber then
-        playerData.WispNumber = currentWispNumber
-        return
+    local targetWispCount = 0
+    if player:HasCollectible(Constants.CollectibleType.DEVIL_KEY_PIECE_1) then
+        targetWispCount = targetWispCount + 1
+    end
+    if player:HasCollectible(Constants.CollectibleType.DEVIL_KEY_PIECE_2) then
+        targetWispCount = targetWispCount + 1
     end
 
-    local wispsList = playerData.WispList
-
-    if not wispsList then
-        playerData.WispList = {}
-        wispsList = playerData.WispList
-    end
-
-    if currentWispNumber > prevWispNumber then
-        --Add wisp
-        local wisp = player:AddWisp(CollectibleType.COLLECTIBLE_SATANIC_BIBLE, Vector(-1000, -1000), false, true)
-        wisp:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
-        wisp:AddEntityFlags(EntityFlag.FLAG_NO_QUERY | EntityFlag.FLAG_NO_REWARD)
-        wisp:RemoveFromOrbit()
-        wisp.Visible = false
-        wispsList[#wispsList+1] = wisp
-    elseif currentWispNumber < prevWispNumber then
-        --Remove wisp
-        local lastWisp = wispsList[#wispsList]
-        lastWisp:Remove()
-        lastWisp:Kill()
-        wispsList[#wispsList] = nil
-    end
-
-    playerData.WispNumber = currentWispNumber
-
-    for _, wisp in ipairs(wispsList) do
-        UpdateInvisibleWisp(wisp)
-    end
+    DevilKeysMod.HiddenWisps:CheckStack(player, CollectibleType.COLLECTIBLE_SATANIC_BIBLE, targetWispCount)
 end
 DevilKeysMod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, DevilKeyPieces.OnPlayerUpdate)
-
-
----@param tear EntityTear
-function DevilKeyPieces:OnTearUpdate(tear)
-    if not tear.SpawnerEntity then return end
-    if tear.SpawnerType ~= EntityType.ENTITY_FAMILIAR or tear.SpawnerVariant ~= FamiliarVariant.WISP then return end
-    local wisp = tear.SpawnerEntity:ToFamiliar()
-
-    local playerData = DevilKeysMod.GetPlayerData(wisp.Player)
-
-    if not playerData.WispList then return end
-
-    local wispPtr = GetPtrHash(wisp)
-
-    for _, otherWisp in ipairs(playerData.WispList) do
-        local otherWispPtr = GetPtrHash(otherWisp)
-
-        if wispPtr == otherWispPtr then
-            tear:Remove()
-            SFXManager():Stop(SoundEffect.SOUND_TEARS_FIRE)
-            return
-        end
-    end
-end
-DevilKeysMod:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, DevilKeyPieces.OnTearUpdate)
-
-
-function DevilKeyPieces:OnGameExit()
-    for i = 0, Game():GetNumPlayers()-1, 1 do
-        local player = Game():GetPlayer(i)
-
-        local playerData = DevilKeysMod.GetPlayerData(player)
-
-        if playerData.WispList then
-            for _, wisp in ipairs(playerData.WispList) do
-                wisp:Remove()
-                wisp:Kill()
-            end
-        end
-
-        if playerData.WispNumber then
-            playerData.WispNumber = 0
-        end
-    end
-end
-DevilKeysMod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, DevilKeyPieces.OnGameExit)
-
-
----@param player EntityPlayer
-function DevilKeyPieces:PreSacrificialAltarUse(_, _, player)
-    local playerData = DevilKeysMod.GetPlayerData(player)
-
-    local wispList = playerData.WispList
-
-    if not wispList then return end
-
-    for _, wisp in ipairs(wispList) do
-        wisp:RemoveFromOrbit()
-		wisp.Player = nil
-    end
-end
-DevilKeysMod:AddCallback(ModCallbacks.MC_PRE_USE_ITEM, DevilKeyPieces.PreSacrificialAltarUse, CollectibleType.COLLECTIBLE_SACRIFICIAL_ALTAR)
-
-
----@param player EntityPlayer
-function DevilKeyPieces:OnSacrificialAltarUse(_, _, player)
-    local playerData = DevilKeysMod.GetPlayerData(player)
-
-    local wispList = playerData.WispList
-
-    if not wispList then return end
-
-    for _, wisp in ipairs(wispList) do
-        wisp:RemoveFromOrbit()
-		wisp.Player = player
-    end
-end
-DevilKeysMod:AddCallback(ModCallbacks.MC_USE_ITEM, DevilKeyPieces.OnSacrificialAltarUse, CollectibleType.COLLECTIBLE_SACRIFICIAL_ALTAR)
 
 
 ---@param heart EntityPickup

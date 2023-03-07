@@ -1,5 +1,8 @@
 DevilKeysMod = RegisterMod("Devil Keys", 1)
 
+DevilKeysMod.HiddenWisps = require("devil_keys_scripts.HiddenItemManager")
+DevilKeysMod.HiddenWisps:Init(DevilKeysMod)
+
 require("devil_keys_scripts.SaveData")(DevilKeysMod)
 
 require("devil_keys_scripts.FallenAngelFight")

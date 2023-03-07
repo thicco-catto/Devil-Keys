@@ -139,6 +139,7 @@ local function LoadStorage(_, _, forceContinue)
 		else
 			-- continuing an existing run right after getting the mod. Pretty bad idea, hypothetical player doing this, but it shouldn't crash maybe
 			Mod.Data = {}
+			Mod.Data.INDEX = {}
 			Mod.LastData = {}
 			Mod.Config = {}
 			Mod.Persistent = {}
@@ -147,11 +148,14 @@ local function LoadStorage(_, _, forceContinue)
 		-- fresh run, clear out the data, but load the config and persistent
 		local loaded = json.decode(Mod:LoadData())
 		Mod.Data = {}
+		Mod.Data.INDEX = {}
 		Mod.LastData = {}
 		Mod.Config = loaded.Config
 		Mod.Persistent = loaded.Persistent
 		ReloadAllCache() -- should not matter, but I SWEAR I had a bug related to it once so let's be safe
 	end
+
+	Mod.HiddenWisps.LoadData()
 end
 Mod:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, LoadStorage)
 
