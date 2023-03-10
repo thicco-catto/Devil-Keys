@@ -201,17 +201,32 @@ function DevilKeyPieces:OnFlipUse()
     local keyPieces1 = Isaac.FindByType(
         EntityType.ENTITY_PICKUP,
         PickupVariant.PICKUP_COLLECTIBLE,
-        Constants.CollectibleType.DEVIL_KEY_PIECE_1
+        CollectibleType.COLLECTIBLE_KEY_PIECE_1
     )
 
     local keyPieces2 = Isaac.FindByType(
         EntityType.ENTITY_PICKUP,
         PickupVariant.PICKUP_COLLECTIBLE,
+        CollectibleType.COLLECTIBLE_KEY_PIECE_2
+    )
+
+    TransformItemsIntoAnother(keyPieces1, CollectibleType.COLLECTIBLE_KEY_PIECE_2)
+    TransformItemsIntoAnother(keyPieces2, CollectibleType.COLLECTIBLE_KEY_PIECE_1)
+
+    local devilKeyPieces1 = Isaac.FindByType(
+        EntityType.ENTITY_PICKUP,
+        PickupVariant.PICKUP_COLLECTIBLE,
+        Constants.CollectibleType.DEVIL_KEY_PIECE_1
+    )
+
+    local devilKeyPieces2 = Isaac.FindByType(
+        EntityType.ENTITY_PICKUP,
+        PickupVariant.PICKUP_COLLECTIBLE,
         Constants.CollectibleType.DEVIL_KEY_PIECE_2
     )
 
-    TransformItemsIntoAnother(keyPieces1, Constants.CollectibleType.DEVIL_KEY_PIECE_2)
-    TransformItemsIntoAnother(keyPieces2, Constants.CollectibleType.DEVIL_KEY_PIECE_1)
+    TransformItemsIntoAnother(devilKeyPieces1, Constants.CollectibleType.DEVIL_KEY_PIECE_2)
+    TransformItemsIntoAnother(devilKeyPieces2, Constants.CollectibleType.DEVIL_KEY_PIECE_1)
 end
 DevilKeysMod:AddCallback(ModCallbacks.MC_USE_ITEM, DevilKeyPieces.OnFlipUse, CollectibleType.COLLECTIBLE_FLIP)
 

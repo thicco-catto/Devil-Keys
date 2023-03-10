@@ -123,6 +123,7 @@ local function IsContinue()
     return continue
 end
 
+local isReloadingCache = false
 local function LoadStorage(_, _, forceContinue)
 	if #Isaac.FindByType(EntityType.ENTITY_PLAYER) ~= 0 then return end
 
@@ -135,7 +136,11 @@ local function LoadStorage(_, _, forceContinue)
 			Mod.Persistent = loaded.Persistent
 			-- And reload all player caches, in case the mod changed stats.
 			--Game():Update()?
-			ReloadAllCache()
+			if not isReloadingCache then
+				isReloadingCache = true
+				ReloadAllCache()
+				isReloadingCache = false
+			end
 		else
 			-- continuing an existing run right after getting the mod. Pretty bad idea, hypothetical player doing this, but it shouldn't crash maybe
 			Mod.Data = {}
@@ -152,7 +157,11 @@ local function LoadStorage(_, _, forceContinue)
 		Mod.LastData = {}
 		Mod.Config = loaded.Config
 		Mod.Persistent = loaded.Persistent
-		ReloadAllCache() -- should not matter, but I SWEAR I had a bug related to it once so let's be safe
+		if not isReloadingCache then
+			isReloadingCache = true
+			ReloadAllCache()
+			isReloadingCache = false
+		end
 	end
 
 	Mod.HiddenWisps.LoadData()

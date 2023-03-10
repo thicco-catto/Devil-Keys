@@ -181,7 +181,9 @@ function FallenAngelFight:OnFallenAngelDeath(angel)
                     for i = 0, Game():GetNumPlayers()-1, 1 do
                         local player = Game():GetPlayer(i)
 
-                        if player:GetMaxHearts() > 2 then
+                        local heartContainers = player:GetMaxHearts() * 2 + player:GetBoneHearts()
+
+                        if heartContainers > 1 then
                             noPlayerHasMoreThanOneHeart = false
                             break
                         end
@@ -195,7 +197,9 @@ function FallenAngelFight:OnFallenAngelDeath(angel)
                 for i = 0, Game():GetNumPlayers()-1, 1 do
                     local player = Game():GetPlayer(i)
 
-                    if player:GetMaxHearts() > 0 then
+                    local heartContainers = player:GetMaxHearts() * 2 + player:GetBoneHearts()
+
+                    if heartContainers > 0 then
                         noPlayerHasRedHearts = false
                         break
                     end
@@ -239,6 +243,96 @@ function FallenAngelFight:OnFallenAngelDeath(angel)
 end
 DevilKeysMod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, FallenAngelFight.OnFallenAngelDeath, EntityType.ENTITY_GABRIEL)
 DevilKeysMod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, FallenAngelFight.OnFallenAngelDeath, EntityType.ENTITY_URIEL)
+
+
+local function TryChangeDevilKeysPrices()
+    local keys = Isaac.FindByType(
+        EntityType.ENTITY_PICKUP,
+        PickupVariant.PICKUP_COLLECTIBLE,
+        Constants.CollectibleType.DEVIL_KEY_PIECE_1
+    )
+
+    local keys2 = Isaac.FindByType(
+        EntityType.ENTITY_PICKUP,
+        PickupVariant.PICKUP_COLLECTIBLE,
+        Constants.CollectibleType.DEVIL_KEY_PIECE_2
+    )
+
+    for _, key in ipairs(keys2) do
+        keys[#keys+1] = key
+    end
+
+    ---@type EntityPickup[]
+    local keysWithPrice = {}
+
+    for _, key in ipairs(keys) do
+        local collectible = key:ToPickup()
+
+        if collectible.Price < 0 and not collectible.AutoUpdatePrice then
+            keysWithPrice[#keysWithPrice+1] = collectible
+        end
+    end
+
+    local noPlayerHasRedHearts = true
+    local noPlayerHasMoreThanOneHeart = true
+    for i = 0, Game():GetNumPlayers()-1, 1 do
+        local player = Game():GetPlayer(i)
+
+        local heartContainers = player:GetMaxHearts() * 2 + player:GetBoneHearts()
+
+        if heartContainers > 1 then
+            noPlayerHasMoreThanOneHeart = false
+            noPlayerHasRedHearts = false
+            break
+        elseif heartContainers > 0 then
+            noPlayerHasRedHearts = false
+            break
+        end
+    end
+
+    for _, collectible in ipairs(keysWithPrice) do
+        collectible.Price = PickupPrice.PRICE_ONE_HEART
+
+        if collectible.SubType == Constants.CollectibleType.DEVIL_KEY_PIECE_2 and DevilKeysMod.Config.DevilKeysPrice == 2 then
+            if noPlayerHasMoreThanOneHeart then
+                collectible.Price = PickupPrice.PRICE_ONE_HEART_AND_TWO_SOULHEARTS
+            else
+                collectible.Price = PickupPrice.PRICE_TWO_HEARTS
+            end
+        end
+
+        if noPlayerHasRedHearts then
+            if collectible.Price == PickupPrice.PRICE_ONE_HEART then
+                collectible.Price = PickupPrice.PRICE_ONE_SOUL_HEART
+            else
+                collectible.Price = PickupPrice.PRICE_TWO_SOUL_HEARTS
+            end
+        end
+    end
+end
+
+
+---@param player EntityPlayer
+function FallenAngelFight:OnPeffectUpdate(player)
+    local playerData = DevilKeysMod.GetPlayerData(player)
+
+    local prevPlayerType = playerData.prevPlayerType
+    local currentPlayerType = player:GetPlayerType()
+
+    if prevPlayerType == nil then
+        prevPlayerType = currentPlayerType
+    end
+
+    if currentPlayerType == PlayerType.PLAYER_THEFORGOTTEN or
+    currentPlayerType == PlayerType.PLAYER_THESOUL then
+        if prevPlayerType ~= currentPlayerType then
+            TryChangeDevilKeysPrices()
+        end
+    end
+
+    playerData.prevPlayerType = currentPlayerType
+end
+DevilKeysMod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, FallenAngelFight.OnPeffectUpdate)
 
 
 function FallenAngelFight:OnNewRoom()
